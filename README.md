@@ -5,9 +5,9 @@ Small and performant API for communicating with Web Workers using Promises.
 
 **Goals:**
 
- * Tiny footprint (~2.5kB min+gz).
- * Assumes you have a separate `worker.js` file (easier to debug, better browser support).
- * `JSON.stringify`s messages [for performance](http://blog.nparashuram.com/2016/02/using-webworkers-to-make-react-faster.html).
+ * Tiny footprint (~2.5kB min+gz)
+ * Assumes you have a separate `worker.js` file (easier to debug, better browser support)
+ * `JSON.stringify`s messages [for performance](http://blog.nparashuram.com/2016/02/using-webworkers-to-make-react-faster.html)
 
 Usage
 ---
@@ -52,14 +52,10 @@ promiseWorker.postMessage({
   hello: 'world',
   answer: 42,
   "this is fun": true
-}).then(function (response) {
-  // handle response
-}).catch(function (error) {
-  // handle error
-});
+}).then(/* ... */);
 ```
  
-Note that the message will be `JSON.stringify`'d, so you 
+Note that the message will be `JSON.stringify`d, so you 
 can't send functions, `Date`s, custom classes, etc.
 
 Inside of the worker, the registered handler can return either a Promise or a normal value:
@@ -76,7 +72,7 @@ register(function (message) {
 ```
 
 Ultimately, the value that is sent from the worker to the main thread is also
-`stringify`'d, so the same rules above apply.
+`stringify`d, so the same rules above apply.
 
 Also note that you `require()` two separate APIs, so that the library is split
 between the `worker.js` and main file. This keep the total bundle size smaller.
@@ -107,6 +103,25 @@ register(function (message) {
   }
 });
 ```
+
+Browser support
+----
+
+See [.zuul.yml](https://github.com/nolanlawson/promise-worker/blob/master/.zuul.yml) for the full list
+of tested browsers, but basically:
+
+* Chrome
+* Firefox
+* Safari 7+
+* IE 10+
+* Edge
+* iOS 7+
+* Android 4.4+
+
+If a browser [doesn't support Web Workers](http://caniuse.com/webworker) but you still want to use this library,
+then you can use [PseudoWorker](https://github.com/nolanlawson/pseudo-worker).
+
+This library is not designed to run in Node.
 
 API
 ---
