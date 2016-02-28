@@ -4,8 +4,10 @@
   "description": "Communicate with Web Workers using Promises",
   "main": "lib/index.js",
   "scripts": {
-    "build-worker-bundles": "node bin/build-worker-bundles.js",
-    "test": "npm run build-worker-bundles mocha test/test.js"
+    "build-test": "node bin/build-worker-bundles.js",
+    "test": "npm run build-test && mocha test/test.js",
+    "test-local": "npm run build-test && zuul --local 9000 --no-coverage test/test.js",
+    "test-phantom": "npm run build-test && zuul --phantom --no-coverage test/test.js"
   },
   "repository": {
     "type": "git",
@@ -24,11 +26,13 @@
   },
   "homepage": "https://github.com/nolanlawson/promise-worker#readme",
   "devDependencies": {
+    "assert": "^1.3.0",
     "browserify": "^13.0.0",
     "denodeify": "^1.2.1",
     "glob-promise": "^1.0.6",
     "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
+    "phantomjs": "^2.1.3",
     "pseudo-worker": "^1.0.2",
     "rimraf": "^2.5.2",
     "stream-to-promise": "^1.1.0",

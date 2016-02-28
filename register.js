@@ -45,9 +45,9 @@ function register(objectOrFunc) {
     if (typeof payload === 'string') {
       payload = JSON.parse(payload);
     }
-    var messageId = payload[1];
-    var message = payload[2];
-    var messageType = payload[3];
+    var messageId = payload[0];
+    var message = payload[1];
+    var messageType = payload[2];
 
     if (typeof messageType === 'undefined') {
       if (!defaultCallback) {

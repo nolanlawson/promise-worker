@@ -8,8 +8,22 @@ function PromiseWorker(worker) {
   self._callbacks = {};
   self._messageId = 0;
 
-  worker.addEventListener('message', function (e) {
-    self._onIncomingMessage(e);
+  worker.addEventListener('message', function onIncomingMessage(e) {
+    var message = JSON.parse(e.data);
+    var messageId = message[0];
+    var error = message[1];
+    var result = message[2];
+
+    var callback = self._callbacks[messageId];
+
+    if (!callback) {
+      // Ignore - user might have created multiple PromiseWorkers.
+      // This message is not for us.
+      return;
+    }
+
+    delete self._callbacks[messageId];
+    callback(error, result);
   });
 }
 
@@ -19,7 +33,7 @@ PromiseWorker.prototype.postMessage = function (messageType, message) {
 
   var messageToSend;
   if (typeof message === 'undefined') {
-    messageToSend = [messageId, messageType, message];
+    messageToSend = [messageId, messageType];
   } else {
     messageToSend = [messageId, message, messageType];
   }
@@ -33,17 +47,6 @@ PromiseWorker.prototype.postMessage = function (messageType, message) {
       resolve(result);
     };
   });
-};
-
-PromiseWorker.prototype._onIncomingMessage = function (e) {
-  var message = JSON.parse(e.data);
-  var messageId = message[0];
-  var error = message[1];
-  var result = message[2];
-
-  var callback = self._callbacks[messageId];
-  delete self._callbacks[messageId];
-  callback(error, result);
 };
 
 module.exports = PromiseWorker;
