@@ -9,6 +9,7 @@ function register(objectOrFunc) {
 
   function postOutgoingMessage(messageId, error, result) {
     if (error) {
+      /* istanbul ignore else */
       if ('error' in console) {
         // This is to make errors easier to debug. I think it's important
         // enough to just leave here without giving the user an option
@@ -49,10 +50,7 @@ function register(objectOrFunc) {
   }
 
   function onIncomingMessage(e) {
-    var payload = e.data;
-    if (typeof payload === 'string') {
-      payload = JSON.parse(payload);
-    }
+    var payload = JSON.parse(e.data);
     var messageId = payload[0];
     var message = payload[1];
     var messageType = payload[2];

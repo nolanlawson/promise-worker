@@ -117,4 +117,35 @@ describe('main test suite', function () {
     });
   });
 
+  it('handles unregistered named callbacks', function () {
+    var worker = new Worker(path + 'worker-echo.js');
+    var promiseWorker = new PromiseWorker(worker);
+
+    return promiseWorker.postMessage('nope', 'ping').then(function () {
+      throw new Error('expected an error here');
+    }, function (err) {
+      assert(err);
+    });
+  });
+
+  it('handles unregistered unnamed callbacks', function () {
+    var worker = new Worker(path + 'worker-multi.js');
+    var promiseWorker = new PromiseWorker(worker);
+
+    return promiseWorker.postMessage('ping').then(function () {
+      throw new Error('expected an error here');
+    }, function (err) {
+      assert(err);
+    });
+  });
+
+  after(function () {
+    // check coverage inside the worker
+    if (typeof __coverage__ !== 'undefined' && !process.browser) {
+      require('mkdirp').sync('coverage');
+      require('fs').writeFileSync(
+        'coverage/coverage-worker.json', JSON.stringify(__coverage__), 'utf-8');
+    }
+  });
+
 });
