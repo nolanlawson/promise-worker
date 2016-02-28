@@ -104,6 +104,29 @@ register(function (message) {
 });
 ```
 
+### Error handling
+
+Any thrown errors or asynchronous rejections from the worker will
+br propagated to the main thread as a rejected Promise. For instance:
+
+```js
+// worker.js
+register(function (message) {
+  throw new Error('naughty!');
+});
+```
+
+```js
+// main.js
+promiseWorker.postMessage('whoop').catch(function (err) {
+  console.log(err.message); // 'naughty!'
+});
+```
+
+Note that stacktraces cannot be sent from the worker to the main thread, so you
+will have to debug those errors yourself. This module does however, print
+message to `console.error()`, so you should see them there.
+
 Browser support
 ----
 
