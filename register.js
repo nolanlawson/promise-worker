@@ -2,10 +2,7 @@
 
 var isPromise = require('is-promise');
 
-function register(objectOrFunc) {
-
-  var callbacks = {};
-  var defaultCallback;
+function register(callback) {
 
   function postOutgoingMessage(messageId, error, result) {
     if (error) {
@@ -53,32 +50,13 @@ function register(objectOrFunc) {
     var payload = JSON.parse(e.data);
     var messageId = payload[0];
     var message = payload[1];
-    var messageType = payload[2];
 
-    if (typeof messageType === 'undefined') {
-      if (!defaultCallback) {
-        postOutgoingMessage(messageId, new Error(
-          'No default message handler registered'));
-      } else {
-        handleIncomingMessage(defaultCallback, messageId, message);
-      }
+    if (typeof callback !== 'function') {
+      postOutgoingMessage(messageId, new Error(
+        'Please pass a function into register().'));
     } else {
-      var callback = callbacks[messageType];
-      if (!callback) {
-        postOutgoingMessage(messageId, new Error(
-          'No message handler registered for type: "' + messageType + '"'));
-      } else {
-        handleIncomingMessage(callback, messageId, message);
-      }
+      handleIncomingMessage(callback, messageId, message);
     }
-  }
-
-  if (typeof objectOrFunc === 'object') {
-    Object.keys(objectOrFunc).forEach(function (messageType) {
-      callbacks[messageType] = objectOrFunc[messageType];
-    });
-  } else {
-    defaultCallback = objectOrFunc;
   }
 
   self.addEventListener('message', onIncomingMessage);

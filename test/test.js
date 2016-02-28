@@ -68,19 +68,6 @@ describe('main test suite', function () {
     }));
   });
 
-  it('can have multiple handlers', function () {
-    var worker = new Worker(path + 'worker-multi.js');
-    var promiseWorker = new PromiseWorker(worker);
-
-    return promiseWorker.postMessage('foo', null).then(function (res) {
-      assert.equal(res, 'foo');
-    }).then(function () {
-      return promiseWorker.postMessage('bar', null);
-    }).then(function (res) {
-      assert.equal(res, 'bar');
-    });
-  });
-
   it('can have multiple PromiseWorkers', function () {
     var worker = new Worker(path + 'worker-echo.js');
     var promiseWorker1 = new PromiseWorker(worker);
@@ -93,6 +80,28 @@ describe('main test suite', function () {
     }).then(function (res) {
       assert.equal(res, 'bar');
     });
+  });
+
+
+  it('can have multiple PromiseWorkers 2', function () {
+    var worker = new Worker(path + 'worker-echo.js');
+    var promiseWorkers = [
+      new PromiseWorker(worker),
+      new PromiseWorker(worker),
+      new PromiseWorker(worker),
+      new PromiseWorker(worker),
+      new PromiseWorker(worker)
+    ];
+
+    return Promise.all(promiseWorkers.map(function (promiseWorker, i) {
+      return promiseWorker.postMessage('foo' + i).then(function (res) {
+        assert.equal(res, 'foo' + i);
+      }).then(function () {
+        return promiseWorker2.postMessage('bar' + i);
+      }).then(function (res) {
+        assert.equal(res, 'bar' + i);
+      });
+    }));
   });
 
   it('handles synchronous errors', function () {
@@ -117,19 +126,8 @@ describe('main test suite', function () {
     });
   });
 
-  it('handles unregistered named callbacks', function () {
-    var worker = new Worker(path + 'worker-echo.js');
-    var promiseWorker = new PromiseWorker(worker);
-
-    return promiseWorker.postMessage('nope', 'ping').then(function () {
-      throw new Error('expected an error here');
-    }, function (err) {
-      assert(err);
-    });
-  });
-
-  it('handles unregistered unnamed callbacks', function () {
-    var worker = new Worker(path + 'worker-multi.js');
+  it('handles unregistered callbacks', function () {
+    var worker = new Worker(path + 'worker-empty.js');
     var promiseWorker = new PromiseWorker(worker);
 
     return promiseWorker.postMessage('ping').then(function () {
