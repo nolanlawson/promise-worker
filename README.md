@@ -5,9 +5,9 @@ Small and performant API for communicating with Web Workers using Promises.
 
 **Goals:**
 
- * Tiny footprint
- * Assumes you have a separate `worker.js` file (easier to debug, better browser support)
- * `JSON.stringify`s messages [for performance](http://blog.nparashuram.com/2016/02/using-webworkers-to-make-react-faster.html)
+ * Tiny footprint (~2.5kB min+gz).
+ * Assumes you have a separate `worker.js` file (easier to debug, better browser support).
+ * `JSON.stringify`s messages [for performance](http://blog.nparashuram.com/2016/02/using-webworkers-to-make-react-faster.html).
 
 Usage
 ---
@@ -41,6 +41,8 @@ register(function (message) {
   return 'pong';
 });
 ```
+
+### Message format
 
 The message you send can be any object, array, string, number, etc.:
 
@@ -78,6 +80,33 @@ Ultimately, the value that is sent from the worker to the main thread is also
 
 Also note that you `require()` two separate APIs, so that the library is split
 between the `worker.js` and main file. This keep the total bundle size smaller.
+
+### Multi-type messages
+
+If you need to send messages of multiple types to the worker, just add some
+some type information to the message you send:
+
+```js
+// main.js
+promiseWorker.postMessage({
+  type: 'en'
+}).then(/* ... */);
+
+promiseWorker.postMessage({
+  type: 'fr'
+}).then(/* ... */);
+```
+
+```js
+// worker.js
+register(function (message) {
+  if (message.type === 'en') {
+    return 'Hello!';
+  } else if (message.type === 'fr') {
+    return 'Bonjour!';
+  }
+});
+```
 
 API
 ---
