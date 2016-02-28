@@ -97,7 +97,7 @@ describe('main test suite', function () {
       return promiseWorker.postMessage('foo' + i).then(function (res) {
         assert.equal(res, 'foo' + i);
       }).then(function () {
-        return promiseWorker2.postMessage('bar' + i);
+        return promiseWorker.postMessage('bar' + i);
       }).then(function (res) {
         assert.equal(res, 'bar' + i);
       });

@@ -3,11 +3,12 @@
 /* istanbul ignore next */
 var MyPromise = typeof Promise !== 'undefined' ? Promise : require('lie');
 
+var messageIds = 0;
+
 function PromiseWorker(worker) {
   var self = this;
   self._worker = worker;
   self._callbacks = {};
-  self._messageId = 0;
 
   worker.addEventListener('message', function onIncomingMessage(e) {
     var message = JSON.parse(e.data);
@@ -30,7 +31,7 @@ function PromiseWorker(worker) {
 
 PromiseWorker.prototype.postMessage = function (messageType, message) {
   var self = this;
-  var messageId = self._messageId++;
+  var messageId = messageIds++;
 
   var messageToSend;
   if (typeof message === 'undefined') {

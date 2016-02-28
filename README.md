@@ -57,7 +57,7 @@ promiseWorker.postMessage({
 });
 ```
  
-Note that the message will be `JSON.stringify`d, so you 
+Note that the message will be `JSON.stringify`'d, so you 
 can't send functions, `Date`s, custom classes, etc.
 
 Inside of the worker, the registered handler can return either a Promise or a normal value:
@@ -74,41 +74,10 @@ register(function (message) {
 ```
 
 Ultimately, the value that is sent from the worker to the main thread is also
-`stringify`d, so the same rules above apply.
+`stringify`'d, so the same rules above apply.
 
 Also note that you `require()` two separate APIs, so that the library is split
 between the `worker.js` and main file. This keep the total bundle size smaller.
-
-### Separate message types
-
-If you have different types of messages that you want to send to the Web Worker,
-you can also send message IDs as strings:
-
-```js
-// main.js
-promiseWorker.postMessage('foo', {
-  howdy: 'partner'
-}).then(/* ... */);
-
-promiseWorker.postMessage('bar', {
-  sayonara: 'sucker'
-}).then(/* ... */);
-```
-
-```js
-// worker.js
-register({
-  foo: function (message) {
-    return 'hello';
-  },
-  bar: function (message) {
-    return 'goodbye';
-  }
-});
-```
-
-If you don't specify any message types, then it's assumed that you only have
-one kind of message.
 
 API
 ---
@@ -121,12 +90,10 @@ Create a new `PromiseWorker`, using the given worker.
 
 * `worker` - the `Worker` or [PseudoWorker](https://github.com/nolanlawson/pseudo-worker) to use.
 
-#### `PromiseWorker.postMessage([messageId, ] message)`
+#### `PromiseWorker.postMessage(message)`
 
 Send a message to the worker and return a Promise.
 
-* `messageId` - String - optional
-  * The message ID, or none if you only have one kind of message.
 * `message` - object - required
   * The message to send.
 * returns a Promise
@@ -136,11 +103,7 @@ Send a message to the worker and return a Promise.
 Register a message handler inside of the worker. Your handler consumes a message
 and returns a Promise or value.
 
-#### `register(function or object)`
-
-Accepts either:
+#### `register(function)`
 
 * `function`
   * Takes a message, returns a Promise or a value.
-* `object`
-  * Contains a mapping of message IDs to functions. Each of those functions takes a message and returns a Promise or a value.
