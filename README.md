@@ -19,13 +19,12 @@ Install:
 Inside your main bundle:
 
 ```js
-var PromiseWorker = require('promise-worker/client');
+// main.js
+var PromiseWorker = require('promise-worker');
 var worker = new Worker('worker.js');
 var promiseWorker = new PromiseWorker(worker);
 
-promiseWorker.postMessage({
-  hello: 'world'
-}).then(function (response) {
+promiseWorker.postMessage('ping').then(function (response) {
   // handle response
 }).catch(function (error) {
   // handle error
@@ -35,21 +34,50 @@ promiseWorker.postMessage({
 Inside your `worker.js` bundle:
 
 ```js
-var PromiseWorker = require('promise-worker/worker');
+// worker.js
+var register = require('promise-worker/register');
 
-PromiseWorker.register(function (message) {
-  // return a Promise or a value
+register(function (message) {
+  return 'pong';
 });
 ```
 
-The message can be any object, array, string, number, etc. Note that it will be `JSON.stringify`d, so you
+The message you send can be any object, array, string, number, etc.:
+
+```js
+// main.js
+promiseWorker.postMessage({
+  hello: 'world',
+  answer: 42,
+  "this is fun": true
+}).then(function (response) {
+  // handle response
+}).catch(function (error) {
+  // handle error
+});
+```
+ 
+Note that the message will be `JSON.stringify`d, so you 
 can't send functions, `Date`s, custom classes, etc.
+
+Inside of the worker, the registered handler can return either a Promise or a normal value:
+
+```js
+// worker.js
+register(function (message) {
+  return Promise.resolve().then(function () {
+    return 'much async';
+  }).then(function () {
+    return 'very promise';
+  });
+});
+```
+
+Ultimately, the value that is sent from the worker to the main thread is also
+`stringify`d, so the same rules above apply.
 
 Also note that you `require()` two separate APIs, so that the library is split
 between the `worker.js` and main file. This keep the total bundle size smaller.
-
-(If you really must, you can `require('promise-worker')`, and both APIs are
-available at the top level.)
 
 ### Separate message types
 
@@ -69,7 +97,7 @@ promiseWorker.postMessage('bar', {
 
 ```js
 // worker.js
-PromiseWorker.register({
+register({
   foo: function (message) {
     return 'hello';
   },
@@ -82,58 +110,37 @@ PromiseWorker.register({
 If you don't specify any message types, then it's assumed that you only have
 one kind of message.
 
-### Avoiding `JSON.stringify`
-
-If you need to send `Blob`s, `ArrayBuffer`s, or other objects that you don't
-want to be `stringify`d, use `postRawMessage()`:
-
-```js
-// main.js
-promiseWorker.postRawMessage('myBlobMessage', 
-  new Blob(['blobalicious'], {type: 'text/plain'})
-).then(/* ... */);
-
-```
-
-Then inside your `worker.js` bundle:
-
-```js
-// worker.js
-PromiseWorker.register({
-  myBlobMessage: function (blob) {
-    return "oh hi blob";
-  }
-});
-```
-
 API
 ---
 
-### Client
+### Main bundle
+
+#### `new PromiseWorker(worker)`
+
+Create a new `PromiseWorker`, using the given worker.
+
+* `worker` - the `Worker` or [PseudoWorker](https://github.com/nolanlawson/pseudo-worker) to use.
 
 #### `PromiseWorker.postMessage([messageId, ] message)`
 
-* `messageId` - String - optional
-  * The message ID, or none if you only have one kind of message.
-* `message` - object - required
-  * The message to send. Will be `stringify`ed.
-* returns a `Promise`
-
-#### `PromiseWorker.postRawMessage([messageId, ] message)`
+Send a message to the worker and return a Promise.
 
 * `messageId` - String - optional
   * The message ID, or none if you only have one kind of message.
 * `message` - object - required
-  * The message to send. Will not be `stringify`ed.
-* returns a `Promise`
+  * The message to send.
+* returns a Promise
 
-### Worker
+### Worker bundle
 
-#### `PromiseWorker.register(function or object)`
+Register a message handler inside of the worker. Your handler consumes a message
+and returns a Promise or value.
+
+#### `register(function or object)`
 
 Accepts either:
 
 * `function`
-  * Takes a message, returns a `Promise` or a value.
+  * Takes a message, returns a Promise or a value.
 * `object`
-  * Contains a mapping of message IDs to functions. Each of those functions takes a message and returns a `Promise` or a value.
+  * Contains a mapping of message IDs to functions. Each of those functions takes a message and returns a Promise or a value.

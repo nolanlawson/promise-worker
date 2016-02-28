@@ -4,7 +4,8 @@
   "description": "Communicate with Web Workers using Promises",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha test/test.js"
+    "build-worker-bundles": "node bin/build-worker-bundles.js",
+    "test": "npm run build-worker-bundles mocha test/test.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,14 @@
   },
   "homepage": "https://github.com/nolanlawson/promise-worker#readme",
   "devDependencies": {
+    "browserify": "^13.0.0",
+    "denodeify": "^1.2.1",
+    "glob-promise": "^1.0.6",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
+    "pseudo-worker": "^1.0.2",
+    "rimraf": "^2.5.2",
+    "stream-to-promise": "^1.1.0",
     "zuul": "^3.9.0"
   },
   "dependencies": {
