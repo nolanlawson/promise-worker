@@ -29,16 +29,11 @@ function PromiseWorker(worker) {
   });
 }
 
-PromiseWorker.prototype.postMessage = function (messageType, message) {
+PromiseWorker.prototype.postMessage = function (userMessage) {
   var self = this;
   var messageId = messageIds++;
 
-  var messageToSend;
-  if (typeof message === 'undefined') {
-    messageToSend = [messageId, messageType];
-  } else {
-    messageToSend = [messageId, message, messageType];
-  }
+  var messageToSend = [messageId, userMessage];
 
   return new MyPromise(function (resolve, reject) {
     self._callbacks[messageId] = function (error, result) {
