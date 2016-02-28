@@ -8,6 +8,7 @@
     "test": "npm run build-test && mocha test/test.js",
     "test-local": "npm run build-test && zuul --local 9000 --no-coverage test/test.js",
     "test-phantom": "npm run build-test && zuul --phantom --no-coverage test/test.js",
+    "test-browser": "zuul --no-coverage ./test/test.js",
     "lint": "jshint -c .jshintrc *.js",
     "istanbul-combine": "istanbul-combine -d coverage -r json coverage/coverage.json coverage/coverage-worker.json && mv coverage/coverage-final.json coverage/coverage.json && rimraf coverage/coverage-worker.json",
     "istanbul-check": "istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",

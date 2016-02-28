@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- stable
+sudo: false
+script: npm run $COMMAND
+before_script:
+- npm run lint
+env:
+  matrix:
+  - COMMAND=test
+  - COMMAND=test-browser
+  - COMMAND=test-phantom
+  - COMMAND=report-coverage
+branches:
+  only:
+  - master
