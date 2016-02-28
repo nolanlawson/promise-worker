@@ -5,7 +5,7 @@ if (!process.browser) {
   global.XMLHttpRequest = require('./xhr-shim');
 }
 
-var path = process.browser ? './test/bundle/' : './test/bundle/';
+var path = './test/bundle/';
 
 var assert = require('assert');
 var PromiseWorker = require('../');
