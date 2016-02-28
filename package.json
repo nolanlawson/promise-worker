@@ -1,7 +1,7 @@
 {
   "name": "promise-worker",
   "version": "0.1.0",
-  "description": "Communicate with Web Workers using Promises",
+  "description": "API to communicate with a Web Worker using Promises",
   "main": "lib/index.js",
   "scripts": {
     "build-test": "node bin/build-worker-bundles.js",
