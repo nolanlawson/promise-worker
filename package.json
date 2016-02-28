@@ -7,7 +7,10 @@
     "build-test": "node bin/build-worker-bundles.js",
     "test": "npm run build-test && mocha test/test.js",
     "test-local": "npm run build-test && zuul --local 9000 --no-coverage test/test.js",
-    "test-phantom": "npm run build-test && zuul --phantom --no-coverage test/test.js"
+    "test-phantom": "npm run build-test && zuul --phantom --no-coverage test/test.js",
+    "lint": "jshint -c .jshintrc *.js",
+    "coverage": "istanbul cover ./node_modules/.bin/_mocha ./test/test.js && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",
+    "report-coverage": "npm run coverage && istanbul-coveralls"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,9 @@
     "browserify": "^13.0.0",
     "denodeify": "^1.2.1",
     "glob-promise": "^1.0.6",
+    "istanbul": "^0.4.2",
+    "istanbul-coveralls": "^1.0.3",
+    "jshint": "2.8.0",
     "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
     "phantomjs": "^2.1.3",

@@ -1,0 +1,34 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "unused": true,
+  "eqnull": true,
+  "browser": true,
+  "node": true,
+  "strict": true,
+  "globals": {
+    "Promise": true,
+    "self": true
+  },
+  "white": true,
+  "indent": 2,
+  "maxlen": 120,
+  "predef": [
+    "process",
+    "global",
+    "require",
+    "console",
+    "describe",
+    "before",
+    "after",
+    "beforeEach",
+    "afterEach",
+    "it",
+    "emit"
+  ]
+}

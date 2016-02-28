@@ -1,5 +1,6 @@
 'use strict';
 
+/* istanbul ignore next */
 var MyPromise = typeof Promise !== 'undefined' ? Promise : require('lie');
 
 function PromiseWorker(worker) {
@@ -39,13 +40,13 @@ PromiseWorker.prototype.postMessage = function (messageType, message) {
   }
 
   return new MyPromise(function (resolve, reject) {
-    self._worker.postMessage(JSON.stringify(messageToSend));
     self._callbacks[messageId] = function (error, result) {
       if (error) {
-        return reject(error);
+        return reject(new Error(error.message));
       }
       resolve(result);
     };
+    self._worker.postMessage(JSON.stringify(messageToSend));
   });
 };
 

@@ -9,7 +9,15 @@ function register(objectOrFunc) {
 
   function postOutgoingMessage(messageId, error, result) {
     if (error) {
-      self.postMessage(JSON.stringify([messageId, error.message]));
+      if ('error' in console) {
+        // This is to make errors easier to debug. I think it's important
+        // enough to just leave here without giving the user an option
+        // to silence it.
+        console.error('Worker caught an error:', error);
+      }
+      self.postMessage(JSON.stringify([messageId, {
+        message: error.message
+      }]));
     } else {
       self.postMessage(JSON.stringify([messageId, null, result]));
     }
