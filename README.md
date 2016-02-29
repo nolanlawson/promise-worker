@@ -42,8 +42,8 @@ register(function (message) {
 });
 ```
 
-Note that you `require()` two separate APIs, so that the library is split
-between the `worker.js` and main file. This keep the total bundle size smaller.
+Note that you `require()` two separate APIs, so the library is split
+between the `worker.js` and main file. This keeps the total bundle size smaller.
 
 ### Message format
 
