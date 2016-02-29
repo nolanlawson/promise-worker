@@ -152,7 +152,7 @@ of tested browsers, but basically:
 * Safari 7+
 * IE 10+
 * Edge
-* iOS 7+
+* iOS 8+
 * Android 4.4+
 
 If a browser [doesn't support Web Workers](http://caniuse.com/webworker) but you still want to use this library,
