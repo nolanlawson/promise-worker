@@ -1,8 +1,8 @@
 {
   "name": "promise-worker",
-  "version": "0.1.0",
-  "description": "API to communicate with a Web Worker using Promises",
-  "main": "lib/index.js",
+  "version": "1.0.0",
+  "description": "Communicate with a Web Worker using Promises",
+  "main": "index.js",
   "scripts": {
     "build-test": "node bin/build-worker-bundles.js",
     "test": "npm run build-test && mocha test/test.js",
@@ -55,5 +55,6 @@
   "dependencies": {
     "is-promise": "^2.1.0",
     "lie": "^3.0.2"
-  }
+  },
+  "files": ["index.js", "register.js"]
 }
