@@ -188,3 +188,31 @@ and returns a Promise or value.
 
 * `function`
   * Takes a message, returns a Promise or a value.
+
+
+Testing the library
+---
+
+First:
+
+    npm install
+
+Then to test in Node (using an XHR/PseudoWorker shim):
+
+    npm test
+
+Or to test manually in your browser of choice:
+
+    npm run test-local
+
+Or to test in a browser using SauceLabs:
+
+    npm run test-browser
+
+Or to test in PhantomJS:
+
+    npm run test-phantom
+
+Or to test with coverage reports:
+
+    npm run coverage
