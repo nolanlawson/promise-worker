@@ -105,7 +105,7 @@ register(function (message) {
 
 ```js
 // main.js
-promiseWorker.postMessage('whoop').catch(function (err) {
+promiseWorker.postMessage('whoops').catch(function (err) {
   console.log(err.message); // 'naughty!'
 });
 ```
