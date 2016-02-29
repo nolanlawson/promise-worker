@@ -42,6 +42,9 @@ register(function (message) {
 });
 ```
 
+Note that you `require()` two separate APIs, so that the library is split
+between the `worker.js` and main file. This keep the total bundle size smaller.
+
 ### Message format
 
 The message you send can be any object, array, string, number, etc.:
@@ -54,28 +57,62 @@ promiseWorker.postMessage({
   "this is fun": true
 }).then(/* ... */);
 ```
+
+```js
+// worker.js
+register(function (message) {
+  console.log(message); // { hello: 'world', answer: 42, 'this is fun': true }
+});
+```
  
 Note that the message will be `JSON.stringify`d, so you 
 can't send functions, `Date`s, custom classes, etc.
+
+### Promises
 
 Inside of the worker, the registered handler can return either a Promise or a normal value:
 
 ```js
 // worker.js
-register(function (message) {
+register(function () {
   return Promise.resolve().then(function () {
-    return 'much async';
-  }).then(function () {
-    return 'very promise';
+    return 'much async, very promise';
   });
 });
 ```
 
-Ultimately, the value that is sent from the worker to the main thread is also
-`stringify`d, so the same rules above apply.
+```js
+// main.js
+promiseWorker.postMessage(null).then(function (message) {
+  console.log(message): // 'much async, very promise'
+});
+```
 
-Also note that you `require()` two separate APIs, so that the library is split
-between the `worker.js` and main file. This keep the total bundle size smaller.
+Ultimately, the value that is sent from the worker to the main thread is also
+`stringify`d, so the same format rules apply.
+
+### Error handling
+
+Any thrown errors or asynchronous rejections from the worker will
+br propagated to the main thread as a rejected Promise. For instance:
+
+```js
+// worker.js
+register(function (message) {
+  throw new Error('naughty!');
+});
+```
+
+```js
+// main.js
+promiseWorker.postMessage('whoop').catch(function (err) {
+  console.log(err.message); // 'naughty!'
+});
+```
+
+Note that stacktraces cannot be sent from the worker to the main thread, so you
+will have to debug those errors yourself. This module does however, print
+message to `console.error()`, so you should see them there.
 
 ### Multi-type messages
 
@@ -103,29 +140,6 @@ register(function (message) {
   }
 });
 ```
-
-### Error handling
-
-Any thrown errors or asynchronous rejections from the worker will
-br propagated to the main thread as a rejected Promise. For instance:
-
-```js
-// worker.js
-register(function (message) {
-  throw new Error('naughty!');
-});
-```
-
-```js
-// main.js
-promiseWorker.postMessage('whoop').catch(function (err) {
-  console.log(err.message); // 'naughty!'
-});
-```
-
-Note that stacktraces cannot be sent from the worker to the main thread, so you
-will have to debug those errors yourself. This module does however, print
-message to `console.error()`, so you should see them there.
 
 Browser support
 ----
