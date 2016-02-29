@@ -7,7 +7,7 @@ Small and performant API for communicating with Web Workers using Promises.
 
  * Tiny footprint (~2.5kB min+gz)
  * Assumes you have a separate `worker.js` file (easier to debug, better browser support)
- * `JSON.stringify`s messages [for performance](http://blog.nparashuram.com/2016/02/using-webworkers-to-make-react-faster.html)
+ * `JSON.stringify`s messages [for performance](http://nolanlawson.com/2016/02/29/high-performance-web-worker-messages/)
 
 Usage
 ---
