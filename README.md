@@ -111,7 +111,7 @@ promiseWorker.postMessage('whoops').catch(function (err) {
 ```
 
 Note that stacktraces cannot be sent from the worker to the main thread, so you
-will have to debug those errors yourself. This module does however, print
+will have to debug those errors yourself. This library does however, print
 message to `console.error()`, so you should see them there.
 
 ### Multi-type messages
