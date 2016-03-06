@@ -9,12 +9,10 @@ browsers:
   - name: ie
     version: 10..latest
   - name: microsoftedge
-    version: 20..latest
-# iOS tests disabled because Saucelabs keeps timing out.
-# Tested manually, tests pass in iOS 8+.
-#  - name: iphone
-#    version: [7.0, 8.4, 9.1..latest]
-#  - name: ipad
-#    version: [7.0, 8.4, 9.1..latest]
+    version: 13..latest
+  - name: iphone
+    version: [7.0, 8.4, 9.1..latest]
+  - name: ipad
+    version: [7.0, 8.4, 9.1..latest]
   - name: android
     version: 4.4..latest
