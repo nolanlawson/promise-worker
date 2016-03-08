@@ -94,7 +94,7 @@ Ultimately, the value that is sent from the worker to the main thread is also
 ### Error handling
 
 Any thrown errors or asynchronous rejections from the worker will
-br propagated to the main thread as a rejected Promise. For instance:
+be propagated to the main thread as a rejected Promise. For instance:
 
 ```js
 // worker.js
@@ -116,7 +116,7 @@ message to `console.error()`, so you should see them there.
 
 ### Multi-type messages
 
-If you need to send messages of multiple types to the worker, just add some
+If you need to send messages of multiple types to the worker, just add
 some type information to the message you send:
 
 ```js
