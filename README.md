@@ -51,7 +51,7 @@ If you prefer `script` tags, you can get `PromiseWorker` via:
 <script src="https://npmcdn.com/promise-worker/dist/promise-worker.js"></script>
 ```
 
-And inside the worker, you can get `registerPromiseWorker` function via:
+And inside the worker, you can get `registerPromiseWorker` via:
 
 ```js
 importScripts('https://npmcdn.com/promise-worker/dist/promise-worker.register.js');
