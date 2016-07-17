@@ -35,15 +35,27 @@ Inside your `worker.js` bundle:
 
 ```js
 // worker.js
-var register = require('promise-worker/register');
+var registerPromiseWorker = require('promise-worker/register');
 
-register(function (message) {
+registerPromiseWorker(function (message) {
   return 'pong';
 });
 ```
 
 Note that you `require()` two separate APIs, so the library is split
 between the `worker.js` and main file. This keeps the total bundle size smaller.
+
+If you prefer `script` tags, you can get `PromiseWorker` via:
+
+```html
+<script src="https://npmcdn.com/promise-worker/dist/promise-worker.js"></script>
+```
+
+And inside the worker, you can get `registerPromiseWorker` function via:
+
+```js
+importScripts('https://npmcdn.com/promise-worker/dist/promise-worker.register.js');
+```
 
 ### Message format
 
@@ -60,7 +72,7 @@ promiseWorker.postMessage({
 
 ```js
 // worker.js
-register(function (message) {
+registerPromiseWorker(function (message) {
   console.log(message); // { hello: 'world', answer: 42, 'this is fun': true }
 });
 ```
@@ -74,7 +86,7 @@ Inside of the worker, the registered handler can return either a Promise or a no
 
 ```js
 // worker.js
-register(function () {
+registerPromiseWorker(function () {
   return Promise.resolve().then(function () {
     return 'much async, very promise';
   });
@@ -98,7 +110,7 @@ be propagated to the main thread as a rejected Promise. For instance:
 
 ```js
 // worker.js
-register(function (message) {
+registerPromiseWorker(function (message) {
   throw new Error('naughty!');
 });
 ```
@@ -132,7 +144,7 @@ promiseWorker.postMessage({
 
 ```js
 // worker.js
-register(function (message) {
+registerPromiseWorker(function (message) {
   if (message.type === 'en') {
     return 'Hello!';
   } else if (message.type === 'fr') {
@@ -184,7 +196,7 @@ Send a message to the worker and return a Promise.
 Register a message handler inside of the worker. Your handler consumes a message
 and returns a Promise or value.
 
-#### `register(function)`
+#### `registerPromiseWorker(function)`
 
 * `function`
   * Takes a message, returns a Promise or a value.

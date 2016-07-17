@@ -10,7 +10,7 @@ function parseJsonSafely(str) {
   }
 }
 
-function register(callback) {
+function registerPromiseWorker(callback) {
 
   function postOutgoingMessage(messageId, error, result) {
     if (error) {
@@ -74,4 +74,4 @@ function register(callback) {
   self.addEventListener('message', onIncomingMessage);
 }
 
-module.exports = register;
+module.exports = registerPromiseWorker;
