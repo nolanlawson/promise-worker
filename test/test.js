@@ -137,6 +137,36 @@ describe('main test suite', function () {
     });
   });
 
+  it('allows custom additional behavior', function () {
+    var worker = new Worker(path + 'worker-echo-custom.js');
+    var promiseWorker = new PromiseWorker(worker);
+    return Promise.all([
+      promiseWorker.postMessage('ping'),
+      new Promise(function (resolve, reject) {
+        function cleanup() {
+          worker.removeEventListener('message', onMessage);
+          worker.removeEventListener('error', onError);
+        }
+        function onMessage(e) {
+          if (typeof e.data === 'string') {
+            return;
+          }
+          cleanup();
+          resolve(e.data);
+        }
+        function onError(e) {
+          cleanup();
+          reject(e);
+        }
+        worker.addEventListener('error', onError);
+        worker.addEventListener('message', onMessage);
+        worker.postMessage({hello: 'world'});
+      }).then(function (data) {
+        assert.equal(data.hello, 'world');
+      })
+    ]);
+  });
+
   after(function () {
     // check coverage inside the worker
     if (typeof __coverage__ !== 'undefined' && !process.browser) {

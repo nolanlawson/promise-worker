@@ -5,13 +5,25 @@ var MyPromise = typeof Promise !== 'undefined' ? Promise : require('lie');
 
 var messageIds = 0;
 
+function parseJsonSafely(str) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+}
+
 function PromiseWorker(worker) {
   var self = this;
   self._worker = worker;
   self._callbacks = {};
 
   worker.addEventListener('message', function onIncomingMessage(e) {
-    var message = JSON.parse(e.data);
+    var message = parseJsonSafely(e.data);
+    if (!message) {
+      // Ignore - this message is not for us.
+      return;
+    }
     var messageId = message[0];
     var error = message[1];
     var result = message[2];

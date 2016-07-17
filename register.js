@@ -2,6 +2,14 @@
 
 var isPromise = require('is-promise');
 
+function parseJsonSafely(str) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+}
+
 function register(callback) {
 
   function postOutgoingMessage(messageId, error, result) {
@@ -47,7 +55,11 @@ function register(callback) {
   }
 
   function onIncomingMessage(e) {
-    var payload = JSON.parse(e.data);
+    var payload = parseJsonSafely(e.data);
+    if (!payload) {
+      // message isn't stringified json; ignore
+      return;
+    }
     var messageId = payload[0];
     var message = payload[1];
 
