@@ -185,8 +185,8 @@ describe('service worker test suite', function () {
     return;
   }
 
+  var failed;
   var worker;
-  var promiseWorker;
 
   before(function () {
     return navigator.serviceWorker.register(path + 'worker-echo-sw.js', {
@@ -197,32 +197,28 @@ describe('service worker test suite', function () {
         return navigator.serviceWorker
       }
 
-      return new Promise(function (resolve) {
-        function onStateChange (newWorker) {
-          if (newWorker.state == 'activated' && navigator.serviceWorker.controller) {
-            resolve(navigator.serviceWorker)
-          }
-        }
-
-        function onUpdateFound (registration) {
-          var newWorker = registration.installing;
-
-          registration.installing.addEventListener('statechange', function () {
-            onStateChange(newWorker);
-          })
-        }
-
+      return new Promise(function (resolve, reject) {
         registration.addEventListener('updatefound', function () {
-          onUpdateFound(registration);
+          var newWorker = registration.installing;
+          newWorker.addEventListener('statechange', function () {
+            if (newWorker.state == 'activated' && navigator.serviceWorker.controller) {
+              resolve(navigator.serviceWorker)
+            }
+          });
         });
       });
     }).then(function (theWorker) {
       worker = theWorker;
-      promiseWorker = new PromiseWorker(worker);
+    }).catch(function (err) {
+      console.log('failed to install service worker, bailing out', err);
+      failed = true;
     });
   });
 
   it('echoes a message', function () {
+    if (failed) {
+      return;
+    }
     var promiseWorker = new PromiseWorker(worker);
 
     return promiseWorker.postMessage('ping').then(function (res) {
@@ -231,6 +227,9 @@ describe('service worker test suite', function () {
   });
 
   it('echoes a message multiple times', function () {
+    if (failed) {
+      return;
+    }
     var promiseWorker = new PromiseWorker(worker);
 
     var words = [

@@ -1,7 +1,7 @@
 promise-worker [![Build Status](https://travis-ci.org/nolanlawson/promise-worker.svg?branch=master)](https://travis-ci.org/nolanlawson/promise-worker) [![Coverage Status](https://coveralls.io/repos/github/nolanlawson/promise-worker/badge.svg?branch=master)](https://coveralls.io/github/nolanlawson/promise-worker?branch=master)
 ====
 
-Small and performant API for communicating with Web Workers using Promises.
+Small and performant API for communicating with Web Workers or Service Workers, using Promises.
 
 **Goals:**
 
@@ -76,8 +76,8 @@ registerPromiseWorker(function (message) {
   console.log(message); // { hello: 'world', answer: 42, 'this is fun': true }
 });
 ```
- 
-Note that the message will be `JSON.stringify`d, so you 
+
+Note that the message will be `JSON.stringify`d, so you
 can't send functions, `Date`s, custom classes, etc.
 
 ### Promises
@@ -153,6 +153,48 @@ registerPromiseWorker(function (message) {
 });
 ```
 
+### Service Workers
+
+Communicating with a Service Worker is the same as with a Web Worker.
+However, you have to wait for registration to complete. Here's an example:
+
+```js
+navigator.serviceWorker.register('sw.js', {
+  scope: './'
+}).then(function (registration) {
+  if (navigator.serviceWorker.controller) { // already active and controlling this page
+    return navigator.serviceWorker;
+  }
+  return new Promise(function (resolve, reject) {
+    registration.addEventListener('updatefound', function () {
+      var newWorker = registration.installing;
+      newWorker.addEventListener('statechange', function () {
+        if (newWorker.state == 'activated' && navigator.serviceWorker.controller) {
+          resolve(navigator.serviceWorker);
+        }
+      });
+    });
+  });
+}).then(function (worker) { // the worker is ready
+  var promiseWorker = new PromiseWorker(worker);
+  return promiseWorker.postMessage('hello worker!');
+}).catch(console.log.bind(console));
+```
+
+Then inside your Service Worker:
+
+```js
+var registerPromiseWorker = require('../register');
+
+registerPromiseWorker(function (msg) {
+  return 'hello main thread!';
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(self.clients.claim()); // activate right now
+});
+```
+
 Browser support
 ----
 
@@ -168,9 +210,9 @@ of tested browsers, but basically:
 * Android 4.4+
 
 If a browser [doesn't support Web Workers](http://caniuse.com/webworker) but you still want to use this library,
-then you can use [PseudoWorker](https://github.com/nolanlawson/pseudo-worker).
+then you can use [pseudo-worker](https://github.com/nolanlawson/pseudo-worker).
 
-This library is not designed to run in Node.
+This library is not designed to run in Node.js.
 
 API
 ---
