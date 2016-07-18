@@ -54,7 +54,15 @@ PromiseWorker.prototype.postMessage = function (userMessage) {
       }
       resolve(result);
     };
-    self._worker.postMessage(JSON.stringify(messageToSend));
+    var jsonMessage = JSON.stringify(messageToSend);
+    /* istanbul ignore if */
+    if (typeof self._worker.controller !== 'undefined') {
+      // service worker
+      self._worker.controller.postMessage(jsonMessage);
+    } else {
+      // web worker
+      self._worker.postMessage(jsonMessage);
+    }
   });
 };
 

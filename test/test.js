@@ -5,7 +5,7 @@ if (!process.browser) {
   global.XMLHttpRequest = require('./xhr-shim');
 }
 
-var path = './test/bundle/';
+var path = 'bundle-';
 
 var assert = require('assert');
 var PromiseWorker = require('../');
@@ -174,6 +174,76 @@ describe('main test suite', function () {
       require('fs').writeFileSync(
         'coverage/coverage-worker.json', JSON.stringify(__coverage__), 'utf-8');
     }
+  });
+
+});
+
+describe('service worker test suite', function () {
+  this.timeout(60000);
+
+  if (typeof navigator == 'undefined' || !('serviceWorker' in navigator)) {
+    return;
+  }
+
+  var worker;
+  var promiseWorker;
+
+  before(function () {
+    return navigator.serviceWorker.register(path + 'worker-echo-sw.js', {
+      scope: './'
+    }).then(function (registration) {
+      if (navigator.serviceWorker.controller) {
+        // already active and controlling this page
+        return navigator.serviceWorker
+      }
+
+      return new Promise(function (resolve) {
+        function onStateChange (newWorker) {
+          if (newWorker.state == 'activated' && navigator.serviceWorker.controller) {
+            resolve(navigator.serviceWorker)
+          }
+        }
+
+        function onUpdateFound (registration) {
+          var newWorker = registration.installing;
+
+          registration.installing.addEventListener('statechange', function () {
+            onStateChange(newWorker);
+          })
+        }
+
+        registration.addEventListener('updatefound', function () {
+          onUpdateFound(registration);
+        });
+      });
+    }).then(function (controller) {
+      worker = controller
+      promiseWorker = new PromiseWorker(worker)
+    });
+  });
+
+  it('echoes a message', function () {
+    var promiseWorker = new PromiseWorker(worker);
+
+    return promiseWorker.postMessage('ping').then(function (res) {
+      assert.equal(res, 'ping');
+    });
+  });
+
+  it('echoes a message multiple times', function () {
+    var promiseWorker = new PromiseWorker(worker);
+
+    var words = [
+      'foo', 'bar', 'baz',
+      'quux', 'toto', 'bongo', 'haha', 'flim',
+      'foob', 'foobar', 'bazzy', 'fifi', 'kiki'
+    ];
+
+    return Promise.all(words.map(function (word) {
+      return promiseWorker.postMessage(word).then(function (res) {
+        assert.equal(res, word);
+      });
+    }));
   });
 
 });

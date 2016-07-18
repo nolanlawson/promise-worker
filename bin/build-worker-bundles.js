@@ -25,7 +25,7 @@ Promise.resolve().then(function () {
     }
     b = b.bundle();
     return streamToPromise(b).then(function (buff) {
-      var outputFile = 'test/bundle/' + path.basename(file);
+      var outputFile = 'bundle-' + path.basename(file);
       return writeFile(outputFile, buff, 'utf-8');
     });
   }));

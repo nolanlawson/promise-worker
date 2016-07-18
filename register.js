@@ -12,7 +12,15 @@ function parseJsonSafely(str) {
 
 function registerPromiseWorker(callback) {
 
-  function postOutgoingMessage(messageId, error, result) {
+  function postOutgoingMessage(e, messageId, error, result) {
+    function postMessage(msg) {
+      /* istanbul ignore if */
+      if (typeof self.postMessage !== 'function') { // service worker
+        e.source.postMessage(msg);
+      } else { // web worker
+        self.postMessage(msg);
+      }
+    }
     if (error) {
       /* istanbul ignore else */
       if (typeof console !== 'undefined' && 'error' in console) {
@@ -21,11 +29,11 @@ function registerPromiseWorker(callback) {
         // to silence it.
         console.error('Worker caught an error:', error);
       }
-      self.postMessage(JSON.stringify([messageId, {
+      postMessage(JSON.stringify([messageId, {
         message: error.message
       }]));
     } else {
-      self.postMessage(JSON.stringify([messageId, null, result]));
+      postMessage(JSON.stringify([messageId, null, result]));
     }
   }
 
@@ -37,19 +45,19 @@ function registerPromiseWorker(callback) {
     }
   }
 
-  function handleIncomingMessage(callback, messageId, message) {
+  function handleIncomingMessage(e, callback, messageId, message) {
 
     var result = tryCatchFunc(callback, message);
 
     if (result.err) {
-      postOutgoingMessage(messageId, result.err);
+      postOutgoingMessage(e, messageId, result.err);
     } else if (!isPromise(result.res)) {
-      postOutgoingMessage(messageId, null, result.res);
+      postOutgoingMessage(e, messageId, null, result.res);
     } else {
       result.res.then(function (finalResult) {
-        postOutgoingMessage(messageId, null, finalResult);
+        postOutgoingMessage(e, messageId, null, finalResult);
       }, function (finalError) {
-        postOutgoingMessage(messageId, finalError);
+        postOutgoingMessage(e, messageId, finalError);
       });
     }
   }
@@ -64,10 +72,10 @@ function registerPromiseWorker(callback) {
     var message = payload[1];
 
     if (typeof callback !== 'function') {
-      postOutgoingMessage(messageId, new Error(
+      postOutgoingMessage(e, messageId, new Error(
         'Please pass a function into register().'));
     } else {
-      handleIncomingMessage(callback, messageId, message);
+      handleIncomingMessage(e, callback, messageId, message);
     }
   }
 
