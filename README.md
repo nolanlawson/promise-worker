@@ -1,16 +1,18 @@
 promise-worker [![Build Status](https://travis-ci.org/nolanlawson/promise-worker.svg?branch=master)](https://travis-ci.org/nolanlawson/promise-worker) [![Coverage Status](https://coveralls.io/repos/github/nolanlawson/promise-worker/badge.svg?branch=master)](https://coveralls.io/github/nolanlawson/promise-worker?branch=master)
 ====
 
-A small and performant library for communicating with Web Workers or Service Workers, using Promises.
-
-* [Live example using Web Workers](https://bl.ocks.org/nolanlawson/05e74a8408a099635c9a38f839b5ae9f)
-* [Live example using Service Workers](https://bl.ocks.org/nolanlawson/91a7f5809f2e17a2e6a753a3cb8d2eec)
+A small and performant library for communicating with Web Workers or Service Workers, using Promises. Post a message to the worker, get a message back.
 
 **Goals:**
 
  * Tiny footprint (~2.5kB min+gz)
  * Assumes you have a separate `worker.js` file (easier to debug, better browser support)
  * `JSON.stringify`s messages [for performance](http://nolanlawson.com/2016/02/29/high-performance-web-worker-messages/)
+
+**Live examples:**
+
+* [Web Workers](https://bl.ocks.org/nolanlawson/05e74a8408a099635c9a38f839b5ae9f)
+* [Service Workers](https://bl.ocks.org/nolanlawson/91a7f5809f2e17a2e6a753a3cb8d2eec)
 
 Usage
 ---
