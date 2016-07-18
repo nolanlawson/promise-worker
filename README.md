@@ -1,7 +1,10 @@
 promise-worker [![Build Status](https://travis-ci.org/nolanlawson/promise-worker.svg?branch=master)](https://travis-ci.org/nolanlawson/promise-worker) [![Coverage Status](https://coveralls.io/repos/github/nolanlawson/promise-worker/badge.svg?branch=master)](https://coveralls.io/github/nolanlawson/promise-worker?branch=master)
 ====
 
-Small and performant API for communicating with Web Workers or Service Workers, using Promises.
+A small and performant library for communicating with Web Workers or Service Workers, using Promises.
+
+* [Live example using Web Workers](https://bl.ocks.org/nolanlawson/05e74a8408a099635c9a38f839b5ae9f)
+* [Live example using Service Workers](https://bl.ocks.org/nolanlawson/91a7f5809f2e17a2e6a753a3cb8d2eec)
 
 **Goals:**
 
