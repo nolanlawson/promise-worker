@@ -216,9 +216,9 @@ describe('service worker test suite', function () {
           onUpdateFound(registration);
         });
       });
-    }).then(function (controller) {
-      worker = controller
-      promiseWorker = new PromiseWorker(worker)
+    }).then(function (theWorker) {
+      worker = theWorker;
+      promiseWorker = new PromiseWorker(worker);
     });
   });
 
