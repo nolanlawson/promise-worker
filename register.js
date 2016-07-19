@@ -16,7 +16,7 @@ function registerPromiseWorker(callback) {
     function postMessage(msg) {
       /* istanbul ignore if */
       if (typeof self.postMessage !== 'function') { // service worker
-        e.source.postMessage(msg);
+        e.ports[0].postMessage(msg);
       } else { // web worker
         self.postMessage(msg);
       }
