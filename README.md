@@ -208,7 +208,7 @@ of tested browsers, but basically:
 
 * Chrome
 * Firefox
-* Safari 7+
+* Safari 8+
 * IE 10+
 * Edge
 * iOS 8+
@@ -216,6 +216,8 @@ of tested browsers, but basically:
 
 If a browser [doesn't support Web Workers](http://caniuse.com/webworker) but you still want to use this library,
 then you can use [pseudo-worker](https://github.com/nolanlawson/pseudo-worker).
+
+For Service Worker support, Chrome 40 and 41 are known to be buggy (see [#9](https://github.com/nolanlawson/promise-worker/pull/9)), but 42+ are supported.
 
 This library is not designed to run in Node.js.
 
