@@ -185,7 +185,6 @@ describe('service worker test suite', function () {
     return;
   }
 
-  var failed;
   var worker;
 
   before(function () {
@@ -209,16 +208,10 @@ describe('service worker test suite', function () {
       });
     }).then(function (theWorker) {
       worker = theWorker;
-    }).catch(function (err) {
-      console.log('failed to install service worker, bailing out', err);
-      failed = true;
     });
   });
 
   it('echoes a message', function () {
-    if (failed) {
-      return;
-    }
     var promiseWorker = new PromiseWorker(worker);
 
     return promiseWorker.postMessage('ping').then(function (res) {
@@ -227,9 +220,6 @@ describe('service worker test suite', function () {
   });
 
   it('echoes a message multiple times', function () {
-    if (failed) {
-      return;
-    }
     var promiseWorker = new PromiseWorker(worker);
 
     var words = [
