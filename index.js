@@ -13,7 +13,7 @@ function parseJsonSafely(str) {
   }
 }
 
-function onMessage (self, e) {
+function onMessage(self, e) {
   var message = parseJsonSafely(e.data);
   if (!message) {
     // Ignore - this message is not for us.
@@ -41,7 +41,7 @@ function PromiseWorker(worker) {
   self._callbacks = {};
 
   worker.addEventListener('message', function (e) {
-    self._onMessage(e);
+    onMessage(self, e);
   });
 }
 
@@ -64,7 +64,7 @@ PromiseWorker.prototype.postMessage = function (userMessage) {
       // service worker
       var channel = new MessageChannel();
       channel.port1.onmessage = function (e) {
-        self._onMessage(e);
+        onMessage(self, e);
       };
       self._worker.controller.postMessage(jsonMessage, [channel.port2]);
     } else {
