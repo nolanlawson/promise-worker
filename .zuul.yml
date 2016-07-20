@@ -2,7 +2,7 @@ ui: mocha-bdd
 tunnel: ngrok
 browsers:
   - name: chrome
-    version: 37..latest
+    version: 51..latest
   - name: firefox
     version: 45..latest
   - name: safari
