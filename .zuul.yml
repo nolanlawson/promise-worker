@@ -1,5 +1,6 @@
 ui: mocha-bdd
 tunnel: ngrok
+concurrency: 1
 browsers:
   - name: chrome
     version: 37..latest
