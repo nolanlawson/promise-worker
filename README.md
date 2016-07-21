@@ -166,19 +166,18 @@ However, you have to wait for registration to complete. Here's an example:
 ```js
 navigator.serviceWorker.register('sw.js', {
   scope: './'
-}).then(function (registration) {
-  if (navigator.serviceWorker.controller) { // already active and controlling this page
+}).then(function () {
+  if (navigator.serviceWorker.controller) {
+    // already active and controlling this page
     return navigator.serviceWorker;
   }
-  return new Promise(function (resolve, reject) {
-    registration.addEventListener('updatefound', function () {
-      var newWorker = registration.installing;
-      newWorker.addEventListener('statechange', function () {
-        if (newWorker.state == 'activated' && navigator.serviceWorker.controller) {
-          resolve(navigator.serviceWorker);
-        }
-      });
-    });
+  // wait for a new service worker to control this page
+  return new Promise(function (resolve) {
+    function onControllerChange() {
+      navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+      resolve(navigator.serviceWorker);
+    }
+    navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
   });
 }).then(function (worker) { // the worker is ready
   var promiseWorker = new PromiseWorker(worker);
