@@ -161,7 +161,7 @@ registerPromiseWorker(function (message) {
 ### Service Workers
 
 Communicating with a Service Worker is the same as with a Web Worker.
-However, you have to wait for registration to complete. Here's an example:
+However, you have to wait for the Service Worker to install and start controlling the page. Here's an example:
 
 ```js
 navigator.serviceWorker.register('sw.js', {
