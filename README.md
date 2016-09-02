@@ -53,13 +53,13 @@ between the `worker.js` and main file. This keeps the total bundle size smaller.
 If you prefer `script` tags, you can get `PromiseWorker` via:
 
 ```html
-<script src="https://npmcdn.com/promise-worker/dist/promise-worker.js"></script>
+<script src="https://unpkg.com/promise-worker/dist/promise-worker.js"></script>
 ```
 
 And inside the worker, you can get `registerPromiseWorker` via:
 
 ```js
-importScripts('https://npmcdn.com/promise-worker/dist/promise-worker.register.js');
+importScripts('https://unpkg.com/promise-worker/dist/promise-worker.register.js');
 ```
 
 ### Message format
