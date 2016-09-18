@@ -7,7 +7,7 @@ var messageIds = 0;
 
 function onMessage(self, e) {
   var message = e.data
-  if (!Array.isArray(message) || message.length !== 3) {
+  if (!message) {
     // Ignore - this message is not for us.
     return;
   }
