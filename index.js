@@ -6,7 +6,7 @@ var MyPromise = typeof Promise !== 'undefined' ? Promise : require('lie');
 var messageIds = 0;
 
 function onMessage(self, e) {
-  var message = e.data
+  var message = e.data;
   if (!Array.isArray(message) || message.length < 2) {
     // Ignore - this message is not for us.
     return;

@@ -54,7 +54,7 @@ function registerPromiseWorker(callback) {
   }
 
   function onIncomingMessage(e) {
-    var payload = e.data
+    var payload = e.data;
     if (!Array.isArray(payload) || payload.length !== 2) {
       // message doens't match communication format; ignore
       return;
