@@ -5,17 +5,9 @@ var MyPromise = typeof Promise !== 'undefined' ? Promise : require('lie');
 
 var messageIds = 0;
 
-function parseJsonSafely(str) {
-  try {
-    return JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-}
-
 function onMessage(self, e) {
-  var message = parseJsonSafely(e.data);
-  if (!message) {
+  var message = e.data
+  if (!Array.isArray(message) || message.length !== 3) {
     // Ignore - this message is not for us.
     return;
   }
@@ -58,7 +50,7 @@ PromiseWorker.prototype.postMessage = function (userMessage) {
       }
       resolve(result);
     };
-    var jsonMessage = JSON.stringify(messageToSend);
+
     /* istanbul ignore if */
     if (typeof self._worker.controller !== 'undefined') {
       // service worker, use MessageChannels because e.source is broken in Chrome < 51:
@@ -67,10 +59,10 @@ PromiseWorker.prototype.postMessage = function (userMessage) {
       channel.port1.onmessage = function (e) {
         onMessage(self, e);
       };
-      self._worker.controller.postMessage(jsonMessage, [channel.port2]);
+      self._worker.controller.postMessage(messageToSend, [channel.port2]);
     } else {
       // web worker
-      self._worker.postMessage(jsonMessage);
+      self._worker.postMessage(messageToSend);
     }
   });
 };

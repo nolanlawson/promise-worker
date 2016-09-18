@@ -2,14 +2,6 @@
 
 var isPromise = require('is-promise');
 
-function parseJsonSafely(str) {
-  try {
-    return JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-}
-
 function registerPromiseWorker(callback) {
 
   function postOutgoingMessage(e, messageId, error, result) {
@@ -29,11 +21,11 @@ function registerPromiseWorker(callback) {
         // to silence it.
         console.error('Worker caught an error:', error);
       }
-      postMessage(JSON.stringify([messageId, {
+      postMessage([messageId, {
         message: error.message
-      }]));
+      }]);
     } else {
-      postMessage(JSON.stringify([messageId, null, result]));
+      postMessage([messageId, null, result]);
     }
   }
 
@@ -46,7 +38,6 @@ function registerPromiseWorker(callback) {
   }
 
   function handleIncomingMessage(e, callback, messageId, message) {
-
     var result = tryCatchFunc(callback, message);
 
     if (result.err) {
@@ -63,9 +54,9 @@ function registerPromiseWorker(callback) {
   }
 
   function onIncomingMessage(e) {
-    var payload = parseJsonSafely(e.data);
-    if (!payload) {
-      // message isn't stringified json; ignore
+    var payload = e.data
+    if (!Array.isArray(payload) || payload.length !== 2) {
+      // message doens't match communication format; ignore
       return;
     }
     var messageId = payload[0];
