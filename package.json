@@ -52,6 +52,7 @@
     "pseudo-worker": "^1.1.0",
     "rimraf": "^2.5.3",
     "run-scripts": "^0.4.0",
+    "sinon": "^2.1.0",
     "stream-to-promise": "^1.1.0",
     "uglify-js": "^2.7.0",
     "zuul": "^3.10.1",

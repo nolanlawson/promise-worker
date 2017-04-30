@@ -8,6 +8,7 @@ if (!process.browser) {
 var path = 'bundle-';
 
 var assert = require('assert');
+var sinon = require('sinon');
 var PromiseWorker = require('../');
 var Promise = require('lie');
 
@@ -30,6 +31,25 @@ describe('main test suite', function () {
 
     return promiseWorker.postMessage('ping').then(function (res) {
       assert.equal(res, 'ping');
+    });
+  });
+
+
+  it('logs to stderr when not explicitly disabled in register options', function() {
+    var onErrorMsg = function() { logged = true };
+    var errMsg = 'an error message';
+    var spy = sinon.stub(console, 'error').callsFake(() => {});
+
+    var worker = new Worker(path + 'worker-log-error.js');
+    var promiseWorker = new PromiseWorker(worker);
+
+    return promiseWorker.postMessage('ping').then(function () {
+      assert(console.error.calledOnce);
+      assert.equal(errMsg, console.error.getCall(0).args[0]);
+    })
+    .catch(function (err) {
+      assert.equal(err.message, errMsg);
+      console.error.restore();
     });
   });
 

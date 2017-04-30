@@ -2,4 +2,4 @@
 
 var register = require('../register');
 
-register('mistake!');
+register('mistake!', { disableErrorLogging: true }); // Disable error logging for tests
