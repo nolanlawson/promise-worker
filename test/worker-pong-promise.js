@@ -5,4 +5,4 @@ var Promise = require('lie');
 
 register(function () {
   return Promise.resolve('pong');
-});
+}, { disableErrorLogging: true }); // Disable error logging for tests

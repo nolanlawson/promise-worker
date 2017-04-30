@@ -10,7 +10,7 @@ function parseJsonSafely(str) {
   }
 }
 
-function registerPromiseWorker(callback) {
+function registerPromiseWorker(callback, options) {
 
   function postOutgoingMessage(e, messageId, error, result) {
     function postMessage(msg) {
@@ -22,8 +22,7 @@ function registerPromiseWorker(callback) {
       }
     }
     if (error) {
-      /* istanbul ignore else */
-      if (typeof console !== 'undefined' && 'error' in console) {
+      if (!(options && options.disableErrorLogging) && typeof console !== 'undefined' && 'error' in console) {
         // This is to make errors easier to debug. I think it's important
         // enough to just leave here without giving the user an option
         // to silence it.

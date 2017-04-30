@@ -131,6 +131,14 @@ Note that stacktraces cannot be sent from the worker to the main thread, so you
 will have to debug those errors yourself. This library does however, print
 messages to `console.error()`, so you should see them there.
 
+#### Disabling Error Logging
+
+While the error logging does help with debugging in production you may not want
+to have all errors that occur in the worker logged to the console.  To disable this
+feature pass `disableErrorLogging: true` in your options object when registering your
+PromiseWorker.
+
+
 ### Multi-type messages
 
 If you need to send messages of multiple types to the worker, just add
