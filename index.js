@@ -1,8 +1,5 @@
 'use strict';
 
-/* istanbul ignore next */
-var MyPromise = typeof Promise !== 'undefined' ? Promise : require('lie');
-
 var messageIds = 0;
 
 function onMessage(self, e) {
@@ -43,7 +40,7 @@ PromiseWorker.prototype.postMessage = function (userMessage) {
 
   var messageToSend = [messageId, userMessage];
 
-  return new MyPromise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     self._callbacks[messageId] = function (error, result) {
       if (error) {
         return reject(new Error(error.message));

@@ -1,5 +1,7 @@
 'use strict';
 
+require('lie/polyfill')
+
 if (!process.browser) {
   global.Worker = require('pseudo-worker');
   global.XMLHttpRequest = require('./xhr-shim');
@@ -9,7 +11,6 @@ var path = 'bundle-';
 
 var assert = require('assert');
 var PromiseWorker = require('../');
-var Promise = require('lie');
 
 describe('main test suite', function () {
 

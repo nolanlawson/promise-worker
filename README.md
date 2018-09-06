@@ -269,10 +269,6 @@ Or to test in a browser using SauceLabs:
 
     npm run test-browser
 
-Or to test in PhantomJS:
-
-    npm run test-phantom
-
 Or to test with coverage reports:
 
     npm run coverage

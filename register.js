@@ -1,6 +1,9 @@
 'use strict';
 
-var isPromise = require('is-promise');
+function isPromise(obj) {
+  // via https://unpkg.com/is-promise@2.1.0/index.js
+  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+}
 
 function registerPromiseWorker(callback) {
 
