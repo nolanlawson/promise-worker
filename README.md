@@ -5,7 +5,7 @@ A small and performant library for communicating with Web Workers or Service Wor
 
 **Goals:**
 
- * Tiny footprint (~1.4kB min+gz)
+ * Tiny footprint (~700 bytes min+gz)
  * Assumes you have a separate `worker.js` file (easier to debug, better browser support)
 
 **Live examples:**
