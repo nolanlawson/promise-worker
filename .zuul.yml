@@ -1,7 +1,6 @@
 ui: mocha-bdd
 tunnel:
-  type: localtunnel
-  https: true
+  type: ngrok
 browsers:
   - name: chrome
     version: latest
