@@ -10,7 +10,7 @@ browsers:
   - name: safari
     version: 10.3
   - name: ie
-    version: 10..latest
+    version: 10
   - name: microsoftedge
     version: latest
   - name: iphone
