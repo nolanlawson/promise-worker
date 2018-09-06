@@ -69,7 +69,8 @@
       "__coverage__"
     ],
     "ignore": [
-      "test/bundle"
+      "test/bundle",
+      "dist"
     ]
   },
   "files": [
