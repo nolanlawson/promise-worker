@@ -147,7 +147,7 @@ describe('main test suite', function () {
           worker.removeEventListener('error', onError)
         }
         function onMessage (e) {
-          if (typeof e.data === 'string') {
+          if (Array.isArray(e.data)) { // this is promise-worker
             return
           }
           cleanup()
