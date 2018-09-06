@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
-var registerPromiseWorker = require('../register');
+var registerPromiseWorker = require('../register')
 
 registerPromiseWorker(function (msg) {
-  return msg;
-});
+  return msg
+})
 
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
   // activate right now
-  event.waitUntil(self.clients.claim());
-});
+  event.waitUntil(self.clients.claim())
+})

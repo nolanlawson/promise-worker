@@ -1,21 +1,19 @@
 ui: mocha-bdd
+concurrency: 1
 tunnel:
-  type: localtunnel
-  https: true
+  type: ngrok
 browsers:
   - name: chrome
-    version: 42..latest
+    version: latest
   - name: firefox
-    version: 45..latest
+    version: latest
   - name: safari
-    version: [8, 9..latest]
+    version: latest
   - name: ie
     version: 10..latest
   - name: microsoftedge
-    version: 13..latest
+    version: latest
   - name: iphone
-    version: [8.4, 9.2]
-  - name: ipad
-    version: [8.4, 9.2]
+    version: latest
   - name: android
-    version: 4.4..latest
+    version: 4.4

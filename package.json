@@ -9,9 +9,8 @@
     "build-test": "node bin/build-worker-bundles.js",
     "test": "npm run build-test && mocha test/test.js",
     "test-local": "npm run build-test && zuul --local 9000 --no-coverage test/test.js",
-    "test-phantom": "npm run build-test && zuul --phantom --no-coverage test/test.js",
     "test-browser": "npm run build-test && zuul --no-coverage ./test/test.js",
-    "lint": "jshint -c .jshintrc *.js",
+    "lint": "standard",
     "istanbul-combine": "istanbul-combine -d coverage -r json coverage/coverage.json coverage/coverage-worker.json && mv coverage/coverage-final.json coverage/coverage.json && rimraf coverage/coverage-worker.json",
     "istanbul-check": "istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",
     "test-for-coverage": "istanbul cover ./node_modules/.bin/_mocha ./test/test.js",
@@ -37,33 +36,48 @@
   "homepage": "https://github.com/nolanlawson/promise-worker#readme",
   "devDependencies": {
     "assert": "^1.3.0",
-    "browserify": "^13.0.1",
+    "browserify": "^16.2.2",
     "bundle-collapser": "^1.2.1",
     "denodeify": "^1.2.1",
-    "glob-promise": "^1.0.6",
+    "glob-promise": "^3.4.0",
     "istanbul": "^0.4.2",
     "istanbul-combine": "^0.3.0",
     "istanbul-coveralls": "^1.0.3",
     "istanbulify": "^0.1.0",
-    "jshint": "2.8.0",
+    "lie": "^3.3.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.4.5",
-    "phantomjs-prebuilt": "^2.1.5",
+    "mocha": "^5.2.0",
     "pseudo-worker": "^1.1.0",
     "rimraf": "^2.5.3",
     "run-scripts": "^0.4.0",
+    "standard": "^12.0.1",
     "stream-to-promise": "^1.1.0",
-    "uglify-js": "^2.7.0",
+    "uglify-js": "^3.4.9",
     "zuul": "^3.10.1",
-    "zuul-localtunnel": "nolanlawson/zuul-localtunnel#https"
+    "zuul-ngrok": "nolanlawson/zuul-ngrok#patch-1"
   },
-  "dependencies": {
-    "is-promise": "^2.1.0",
-    "lie": "^3.0.2"
+  "dependencies": {},
+  "standard": {
+    "globals": [
+      "self",
+      "Worker",
+      "it",
+      "describe",
+      "after",
+      "before",
+      "MessageChannel",
+      "__coverage__"
+    ],
+    "ignore": [
+      "test/bundle",
+      "dist"
+    ]
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "register.js",
+    "register.d.ts",
     "dist"
   ]
 }

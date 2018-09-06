@@ -5,9 +5,8 @@ A small and performant library for communicating with Web Workers or Service Wor
 
 **Goals:**
 
- * Tiny footprint (~2.5kB min+gz)
+ * Tiny footprint (~1.4kB min+gz)
  * Assumes you have a separate `worker.js` file (easier to debug, better browser support)
- * `JSON.stringify`s messages [for performance](http://nolanlawson.com/2016/02/29/high-performance-web-worker-messages/)
 
 **Live examples:**
 
@@ -202,8 +201,12 @@ self.addEventListener('activate', function(event) {
 Browser support
 ----
 
+Note that as of v2.0.0, `promise-worker` does not contain a built-in Promise 
+polyfill. Use something like [es6-promise](https://github.com/stefanpenner/es6-promise) 
+if you need to support [browsers that don't support Promises](https://caniuse.com/#feat=promises).
+
 See [.zuul.yml](https://github.com/nolanlawson/promise-worker/blob/master/.zuul.yml) for the full list
-of tested browsers, but basically:
+of tested browsers. Assuming you have a Promise polyfill, the supported browsers should be:
 
 * Chrome
 * Firefox
@@ -268,10 +271,6 @@ Or to test manually in your browser of choice:
 Or to test in a browser using SauceLabs:
 
     npm run test-browser
-
-Or to test in PhantomJS:
-
-    npm run test-phantom
 
 Or to test with coverage reports:
 

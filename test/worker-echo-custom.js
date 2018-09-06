@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-var register = require('../register');
+var register = require('../register')
 
 register(function (msg) {
-  return msg;
-});
+  return msg
+})
 
 self.addEventListener('message', function (e) {
-  if (typeof e.data !== 'string') { // custom message
-    self.postMessage(e.data);
+  if (!Array.isArray(e.data)) { // custom message, not from promise-worker
+    self.postMessage(e.data)
   }
-});
+})

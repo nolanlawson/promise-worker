@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
-var register = require('../register');
+var register = require('../register')
 
-register('mistake!');
+register('mistake!')
