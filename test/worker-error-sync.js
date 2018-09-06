@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var register = require('../register');
+var register = require('../register')
 
 register(function () {
-  throw new Error('busted!');
-});
+  throw new Error('busted!')
+})

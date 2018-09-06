@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-var register = require('../register');
-var Promise = require('lie');
+var register = require('../register')
+var Promise = require('lie')
 
 register(function () {
-  return Promise.resolve('pong');
-});
+  return Promise.resolve('pong')
+})

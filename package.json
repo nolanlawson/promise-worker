@@ -57,6 +57,21 @@
     "zuul-localtunnel": "nolanlawson/zuul-localtunnel#https"
   },
   "dependencies": {},
+  "standard": {
+    "globals": [
+      "self",
+      "Worker",
+      "it",
+      "describe",
+      "after",
+      "before",
+      "MessageChannel",
+      "__coverage__"
+    ],
+    "ignore": [
+      "test/bundle"
+    ]
+  },
   "files": [
     "index.js",
     "index.d.ts",
