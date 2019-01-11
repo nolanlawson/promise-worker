@@ -7,4 +7,4 @@ declare function registerPromiseWorker<TMessageIn = any, TMessageOut = any>(
   callback: (message: TMessageIn) => Promise<TMessageOut> | TMessageOut
 ): void;
 
-export = registerPromiseWorker;
+export default registerPromiseWorker;
