@@ -1,6 +1,6 @@
 {
   "name": "promise-worker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Communicate with a Web Worker using Promises",
   "main": "index.js",
   "scripts": {
