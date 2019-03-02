@@ -21,4 +21,4 @@ declare class PromiseWorker {
   public postMessage<TResult = any, TInput = any>(userMessage: TInput): Promise<TResult>;
 }
 
-export = PromiseWorker;
+export default PromiseWorker;
