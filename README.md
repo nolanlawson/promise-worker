@@ -61,6 +61,8 @@ And inside the worker, you can get `registerPromiseWorker` via:
 importScripts('https://unpkg.com/promise-worker/dist/promise-worker.register.js');
 ```
 
+See [demo/](demo/) for a simple calculator example.
+
 ### Message format
 
 The message you send can be any object, array, string, number, etc.:
